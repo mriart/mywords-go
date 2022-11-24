@@ -69,12 +69,15 @@ func shuffle(in []string) {
 }
 
 // It prepares the collection send to the device. This sent collection is formed:
-// -the first 3 words (latest introduced), for remembering.
-// -the shuffled collection (including last 3).
+// -the first 3 words (latest introduced), for remembering
+// -the shuffled collection (including last 3)
+// -the END card
 func mix(in []string) []string {
 	pre3in := []string{in[0], in[1], in[2]}
 	shuffle(in)
 	in = append(pre3in, in...)
+	endCard := `FI;Fi, felicitats.;END;end;The end, congrats.`
+	in = append(in, endCard)
 	return in
 }
 
