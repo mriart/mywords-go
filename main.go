@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"math/rand"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/IBM/cloudant-go-sdk/cloudantv1"
@@ -82,6 +83,20 @@ func mix(in []string) []string {
 }
 
 func myWords(w http.ResponseWriter, req *http.Request) {
+	// Get the number of docs to recover from Cloudant.
+	// This is specified in argument ?n= in url. By default it is 50.
+	numDocsURL := req.URL.Query().Get("n")
+	numDocs, err := strconv.Atoi(numDocsURL)
+	if err != nil {
+		numDocs = 50
+		//panic(err)
+	}
+	//Minimum 3 docs.
+	if numDocs < 3 {
+		numDocs = 3
+	}
+	//fmt.Println(numDocs)
+
 	// Create a client with CLOUDANT environment vars.
 	client, err := cloudantv1.NewCloudantV1UsingExternalConfig(&cloudantv1.CloudantV1Options{})
 	if err != nil {
@@ -92,7 +107,7 @@ func myWords(w http.ResponseWriter, req *http.Request) {
 	// Get documents and put in a json/byte array.
 	postAllDocsOptions := client.NewPostAllDocsOptions(dbName)
 	postAllDocsOptions.SetIncludeDocs(true)
-	postAllDocsOptions.SetLimit(50)
+	postAllDocsOptions.SetLimit(int64(numDocs))
 	postAllDocsOptions.SetDescending(true)
 	allDocsResult, _, err := client.PostAllDocs(postAllDocsOptions)
 	if err != nil {
