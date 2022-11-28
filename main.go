@@ -38,7 +38,7 @@ type Doc struct {
 
 // A hello function, to review the server is up and running.
 func hello(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, "Hello\n")
+	fmt.Fprintf(w, "hello\n")
 }
 
 // Function to review the server is up and running, and well connected to Cloudant.
