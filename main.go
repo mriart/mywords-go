@@ -37,8 +37,8 @@ type Doc struct {
 }
 
 // A hello function, to review the server is up and running.
-func hello(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, "hello, up and running\n")
+func health(w http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(w, "Healthy, up and running.\n")
 }
 
 // Function to review the server is up and running, and well connected to Cloudant.
@@ -174,11 +174,11 @@ func postWord(w http.ResponseWriter, r *http.Request) {
 
 // Main. Serves port 8090 for regular functioning.
 func main() {
-	http.HandleFunc("/hello", hello)
+	http.HandleFunc("/health", health)
 	http.HandleFunc("/serverinfo", serverInfo)
 	http.HandleFunc("/mywords", myWords)
 	http.HandleFunc("/postword", postWord)
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 
-	http.ListenAndServe(":8090", nil)
+	http.ListenAndServe(":8080", nil)
 }
