@@ -141,6 +141,9 @@
   <table align="center">
     <tr>
       <td>
+        <button id="imageflip" onclick="flip(); changeLit()"><img src="/public/flip.png" width="70" height="70"></button>
+      </td>
+      <td>
         <a href="/public/postword.html"><img src="/public/plus.png" width="70" height="70"></a>
       </td>
       <td>
@@ -154,6 +157,14 @@
   <script>
     var arrEntries = {{.}};
     var i = -1;
+    var isFlipped = 0;
+
+    function flip() {
+      if (isFlipped == 0) 
+        isFlipped = 1;
+      else 
+        isFlipped = 0;
+    }
 
     function changeLit() {
       if ($('#foo').is(":checked")) {
@@ -163,11 +174,20 @@
       i++;
       var card = arrEntries[i];
       var arrCard = card.split(";");
+      if (isFlipped == 0) {
       document.getElementById("lit0").innerHTML = arrCard[0];
       document.getElementById("lit1").innerHTML = arrCard[1];
       document.getElementById("lit2").innerHTML = arrCard[2];
       document.getElementById("lit3").innerHTML = arrCard[3];
       document.getElementById("lit4").innerHTML = arrCard[4];
+      }
+      else {
+        document.getElementById("lit0").innerHTML = arrCard[2];
+      document.getElementById("lit1").innerHTML = arrCard[3];
+      document.getElementById("lit2").innerHTML = arrCard[0];
+      document.getElementById("lit3").innerHTML = "";
+      document.getElementById("lit4").innerHTML = arrCard[1];  
+      }
     }
     changeLit();
   </script>
